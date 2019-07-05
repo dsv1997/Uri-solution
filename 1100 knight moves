@@ -1,0 +1,109 @@
+//Simple bfs is required to solve this question
+//first initialze() will push all the place where we can reach from i,j 
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int 
+#define pii pair<int,int> 
+#define pb push_back
+#define INF INT_MAX 
+#define mod 1000000007ll
+#define fi first
+#define se second
+#define f(i,p,q) for(int i=p;i<q;i++)
+#define si(a) scanf("%d",&a)
+#define sii(a,b) scanf("%d %d",&a,&b)
+#define siii(a,b,c) scanf("%d %d %d",&a,&b,&c)
+#define pi(a) printf("%d\n",a)
+#define psi(a) printf(" %d",a)
+#define poi(a) printf("%d",a)
+#define sl(a) scanf("%lld",&a)
+#define pl(a) printf("%lld\n",a)
+#define Nline() printf("\n")
+#define sstr(str) scanf("%s",str)
+#define pstr(str) printf("%s\n",str)
+#define SET(a) memset(a,-1,sizeof(a))
+#define CLR(a) memset(a,0,sizeof(a))
+#define vi vector<int>
+#define vvi vector<vi>
+#define all(v) (v).begin(),(v).end()
+#define SORT(v) sort(all(v))
+#define RSORT(v) sort(all(v), greater<int>())
+#define VI(a,n) vi a(n); rep(i,n)cin>>a[i];
+#define sq(n) (n)*(n)
+#define ios ios::sync_with_stdio(false); cin.tie(0);cout.tie(NULL);
+
+vector<pair<int,int>>v[8][8];
+void initialize()
+{   
+	for(int i=0;i<8;i++)
+	{
+		for(int j=0;j<8;j++)
+		{   int x=i;int y=j; int n=8;
+			if(i-2>=0&&j+1<8)v[i][j].push_back({i-2,j+1});
+			
+			if(i-2>=0&&j-1>=0)v[i][j].push_back({i-2,j-1});
+			
+			if(i+2<8&&j+1<8)v[i][j].push_back({i+2,j+1});
+			
+			if(i+2<8&&j-1>=0)v[i][j].push_back({i+2,j-1});
+			
+			if(i-1>=0&&j-2>=0)v[i][j].push_back({i-1,j-2});
+			
+			if(i+1<8&&j-2>=0)v[i][j].push_back({i+1,j-2});
+			
+			if(i-1>=0&&j+2<8)v[i][j].push_back({i-1,j+2});
+			
+			if(i+1<8&&j+2<8)v[i][j].push_back({i+1,j+2});
+		}
+	}
+}
+int main() 
+{
+    ios;
+    initialize();
+    string s,s1;
+    while(cin>>s>>s1)
+    { 
+    
+    int a,b,c,d;
+    
+    a=s[0]-'a';  // x coordinate of starting point 
+    b=s[1]-'0'-1; // y coordinate of starting point
+    c=s1[0]-'a';  // x coordinate of ending point 
+    d=s1[1]-'0'-1;  //y coordinate of ending point 
+   
+   // BFS
+    queue<pair<int,int>>q;
+    q.push({a,b});
+    int vis[8][8]={0}; //visting array
+    vis[a][b]=1;      // starting is visited 
+    int dis[8][8];  //create a distance array which will store the distance
+	  
+    for(int i=0;i<8;i++)for(int j=0;j<8;j++)dis[i][j]=10;//initialze the dis to 10 
+	  
+    dis[a][b]=0;  // starting dis is zero
+    while(!q.empty())
+    {
+    	int p=q.front().first; 
+    	int r=q.front().second;
+    	q.pop();
+    	for(int i=0;i<v[p][r].size();i++)
+    	{  int x=v[p][r][i].first;
+    	   int y=v[p][r][i].second;
+    		if(!vis[x][y])
+    		{
+    			vis[x][y]=1;
+    			if(dis[x][y]>dis[p][r]+1)
+    			   dis[x][y]=dis[p][r]+1;
+    			q.push({x,y}); 
+				  
+			}
+		}
+		
+	}
+        
+	cout<<"To get from "<<s<<" to "<<s1<<" takes "<<dis[c][d]<<" knight moves."<<"\n";
+   
+    }
+    return 0;
+}
